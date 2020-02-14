@@ -80,10 +80,19 @@ ADAPT Centre
 \maketitle
 
 \begin{abstract}
-
+“Federated Meta-Learning” (FML), a concept that allows everyone to benefit from the data that is generated through software libraries including machine learning and data science libraries. We envision a client-server architecture that allows the exchange of meta-data and models for the purpose of meta-learned algorithm selection and configuration across disciplines.
 \end{abstract}
 
 \section{Introduction}
+There is an ever-growing number of algorithms used to solve machine learning and data science problems. The key components of algorithm selection and configuration process is subject to intensive research [1–3, 6, 7, 9, 10, 12, 13, 16, 20, 22, 24]. 
+Meta-learning is one of the most promising techniques to warm starting the algorithm selection and configuration process [12]. With meta-learning, a machine learning model is trained to predict how algorithms will perform on a given task. That predicted algorithm can then either be applied directly to solve the task, or further be optimized. The meta-learning model is built based on the past performance of algorithms on a large number of tasks (datasets). The tasks are typically described through meta-features, and for new unseen tasks, the most performant algorithms can be predicted through the meta-learner. Meta-learning is not only used for predicting the performance of machine learning algorithms but for almost any kind of algorithm selection in various disciplines (SAT [25]; recommender systems [5, 8]; reference parsing [21] …).
+
+\subsection{Research Problem}
+The prediction accuracy of meta learning for algorithm selection varies strongly among disciplines. A challenge is the (non) availability of data in some disciplines to build the meta-learning model. This is due to the typical workflow of machine learning, data science etc. Typically, software libraries – be it machine learning libraries like (Auto) sklearn, or recommender system libraries like LibRec (-Auto) are used in isolation, either locally or in the cloud. Either way, the information how different algorithms and their configurations performed on the particular dataset, is neither published nor shared with others.
+
+\subsection{Research Goal}
+Our goal is to facilitate the algorithm selection process by leveraging historic performance data that was on various devices by various software libraries.
+
 
 
 
