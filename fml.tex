@@ -112,6 +112,25 @@ We have built “COOL-TOOL-NAME”, a tool that allows everyone to benefit from 
 
 The input to COOL-TOOL-NAME is the hashed dataset of the task, and the output is a recommendation for the potentially best performing algorithm(s) to solve that task (see Figure 1). This recommendation consists simply of a list of the best algorithms or simply a single best performing algorithm and their predicted performance values. In its simplest form, COOL-TOOL-NAME is a knowledge base or directory of algorithms-data performance measures. Here we want to introduce the concept called “Federated Meta-Learning” (FML), COOL-TOOL-NAME is an implementation of this concept. To the best of our knowledge this concept is novel. The term “Federated Meta Learning” has only been used once before by Chen et al. but in a different context [4]. This knowledge base is built and updated by users who use COOL-TOOL-NAME by sending their model’s and dataset’s meta-data via scikit-learn to the tool.
 
+Scikit-learn Internally makes the following API call to publish the data sent by the user to the server.
+\begin{lstlisting}
+POST: /metric
+data-params: 
+{model, name, value, hashed-dataset}
+\end{lstlisting}
+
+These API calls are used to retrieve all, the best algorithm with minimum metric value, and the best algorithm with maximum metric value respectively from the server given a hashed-dataset as a data parameter to the API calls.
+\begin{lstlisting}
+POST: /metric/retrieve/all
+data-params: {hashed-dataset}
+POST: /metric/retrieve/min
+data-params: {hashed-dataset}
+POST: /metric/retrieve/max
+data-params: {hashed-dataset}
+\end{lstlisting}
+
+\section{Limitations and Future Work}
+Currently COOL-TOOL-NAME only suggests algorithm(s), if the hashed dataset provided as the input is an exact match to that in the database, if an exact match is not found the user is notified that `there isn’t any algorithm recommendation for the given dataset`. So, a generic data description language in to be introduced to the system which is powerful enough to handle requests from data from various disciplines. The database only stores values like algorithm name, metric name, metric value and the hash dataset, but the future plan is to store even more meta data about the model like the model parameters. In the long run, social questions need consideration such as preventing manipulation (developers of algorithms may have an interest that their algorithms are `recommended`) and free-rider problems (users benefiting from the system without sharing their data). Another challenge would arise if the system should not only focus on the globally best algorithm for a task (an entire dataset) but if per-instance algorithm selection should be learned. Ultimately, COOL-TOOL-NAME should be able to predict algorithm performance for unseen tasks. This would make the whole system even more complex.
 
 
 
