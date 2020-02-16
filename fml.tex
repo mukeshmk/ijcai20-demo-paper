@@ -130,6 +130,22 @@ POST: /metric/retrieve/max
 data-params: {hashed-dataset}
 \end{lstlisting}
 
+These API's are exposed via scikit-learn library by importing the following package and by making appropriate function calls:
+\begin{lstlisting}[language=python]
+from sklearn.fml import FMLClient
+\end{lstlisting}
+
+A sample of the output for an API call via scikit-learn for one of it's toy data-sets (Breast Cancer Wisconsin (diagnostic) dataset) is as follows (see figure 2):
+\begin{lstlisting}[language=python]
+f.retrieve_best_metric(data_set, True)
+\end{lstlisting}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=3.5in]{sample-output.PNG}
+    \caption{Sample Output}
+    \label{sample-output}
+\end{figure}
+
 
 \section{Limitations and Future Work}
 Currently COOL-TOOL-NAME only suggests algorithm(s), if the hashed dataset provided as the input is an exact match to that in the database, if an exact match is not found the user is notified that `there isn’t any algorithm recommendation for the given dataset`. So, a generic data description language is to be introduced to the system which is powerful enough to handle requests from data from various disciplines. The database only stores values like algorithm name, metric name, metric value and the hash dataset, there is scope  future implementation, which is to store even more meta data about the model like the model parameters and metrics for various configurations. In the long run, social questions need consideration such as preventing manipulation (developers of algorithms may have an interest that their algorithms are `recommended`) and free-rider problems (users benefiting from the system without sharing their data). Another challenge would arise if the system should not only focus on the globally best algorithm for a task (an entire dataset) but if per-instance algorithm selection should be learned. Ultimately, COOL-TOOL-NAME should be able to predict algorithm performance for unseen tasks. This would make the whole system even more complex.
