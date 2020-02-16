@@ -23,6 +23,7 @@
 \usepackage{booktabs}
 \usepackage{algorithm}
 \usepackage{algorithmic}
+\usepackage{listings}
 \urlstyle{same}
 
 % the following package is optional:
@@ -84,7 +85,7 @@ ADAPT Centre
 \end{abstract}
 
 \section{Overview and Related Work}
-There are an ever-growing number of algorithms used to solve machine learning and data science problems. The key components of algorithm selection and configuration process is subject to intensive research [1–3, 6, 7, 9, 10, 12, 13, 16, 20, 22, 24]. 
+There are an ever-growing number of algorithms used to solve machine learning and data science problems and the key components of algorithm selection and configuration process is subject to intensive research. [1–3, 6, 7, 9, 10, 12, 13, 16, 20, 22, 24].
 
 Meta-learning is one of the most promising techniques to warm starting the algorithm selection and configuration process [12]. With meta-learning, a machine learning model is trained to predict how algorithms perform on a given task. That predicted algorithm can then either be applied directly to solve the task, or further be optimized. The meta-learning model is built based on the past performance of algorithms on a large number of tasks (datasets). The tasks are typically described through meta-features, and for new unseen tasks, the most performant algorithms can be predicted through the meta-learner. Meta-learning is not only used for predicting the performance of machine learning algorithms but also for almost any kind of algorithm selection in various disciplines (SAT [25]; recommender systems [5, 8]; reference parsing [21] …).
 
@@ -100,11 +101,18 @@ Federated Meta Learning has similarities with “federated machine learning”, 
 
 
 \section{COOL-TOOL-NAME}
-We have built “COOL-TOOL-NAME”, a tool that allows everyone to benefit from the data that is generated through software libraries including machine learning and data science libraries as well as the auto* tools and tools from other domains. We have developed a client-server architecture that allows the exchange of meta-data and models for the purpose of meta-learned algorithm selection and configuration across disciplines, and also have modified scikit-learn (a machine learning library) to make API calls to COOL-TOOL-NAME so as to perform the above mentioned operations.
+We have built “COOL-TOOL-NAME”, a tool that allows everyone to benefit from the data that is generated through software libraries including machine learning and data science libraries as well as the auto* tools and tools from other domains. We have developed a client-server architecture that allows the exchange of meta-data and metrics for the purpose of meta-learned algorithm selection and configuration across disciplines, and also have modified scikit-learn (a machine learning library) to make API calls to COOL-TOOL-NAME so as to perform the above mentioned operations.
 
-The input to COOL-TOOL-NAME is the hashed dataset of the task, and the output is a recommendation for the potentially best performing algorithm(s) to solve that task. This recommendation consists simply of a list of the best algorithms or simply a single best performing algorithm and their predicted performance values. In its simplest form, COOL-TOOL-NAME is a knowledge base or directory of algorithms-data performance measures. Here we want to introduce the concept called “Federated Meta-Learning” (FML), COOL-TOOL-NAME is an implementation of this concept. To the best of our knowledge this concept is novel. The term “Federated Meta Learning” has only been used once before by Chen et al. but in a different context [4]. 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=3.5in]{architecture-diagram.PNG}
+    \caption{Architecture Diagram}
+    \label{architecture-diagram}
+\end{figure}
 
-\subsection{Architecture}
+The input to COOL-TOOL-NAME is the hashed dataset of the task, and the output is a recommendation for the potentially best performing algorithm(s) to solve that task (see Figure 1). This recommendation consists simply of a list of the best algorithms or simply a single best performing algorithm and their predicted performance values. In its simplest form, COOL-TOOL-NAME is a knowledge base or directory of algorithms-data performance measures. Here we want to introduce the concept called “Federated Meta-Learning” (FML), COOL-TOOL-NAME is an implementation of this concept. To the best of our knowledge this concept is novel. The term “Federated Meta Learning” has only been used once before by Chen et al. but in a different context [4]. This knowledge base is built and updated by users who use COOL-TOOL-NAME by sending their model’s and dataset’s meta-data via scikit-learn to the tool.
+
+
 
 
 %% The file named.bst is a bibliography style file for BibTeX 0.99c
