@@ -135,7 +135,7 @@ These API's are exposed via scikit-learn library by importing the following pack
 from sklearn.fml import FMLClient
 \end{lstlisting}
 
-A sample of the output for an API call via scikit-learn for one of it's toy data-sets (Breast Cancer Wisconsin (diagnostic) dataset) is as follows (see figure 2):
+A sample of the output for an API call via scikit-learn for one of it's toy data-sets (Breast Cancer Wisconsin (diagnostic) dataset) \cite{william-et-al} is as follows (see figure 2):
 \begin{lstlisting}[language=python]
 f.retrieve_best_metric(data_set, True)
 \end{lstlisting}
@@ -146,6 +146,9 @@ f.retrieve_best_metric(data_set, True)
     \label{sample-output}
 \end{figure}
 
+
+\section{Evaluation}
+COOL-TOOL-NAME and scikit-learn's toy datasets were used and evaluated against various machine learning algorithms for which the execution time was measured. In the case of scikit-learn’s Breast Cancer Wisconsin (diagnostic) dataset \cite{william-et-al}, execution time of 0.039sec and 0.596sec were recorded for SVC and GradientBoostingClassifier respectively, execution time of 8 other algorithms were also measured to identify the algorithm with best performance over the given dataset (algorithm with least MSE). The algorithm with the best metric was HuberRegressor with an MSE of 2438.005. Use of COOL-TOOL-NAME to identify the best performing algorithm for a given dataset allows the user in scaling down the repetitive effort and time consumed in rewriting and executing code, correcting possible human errors, etc.
 
 \section{Limitations and Future Work}
 Currently COOL-TOOL-NAME only suggests algorithm(s), if the hashed dataset provided as the input is an exact match to that in the database, if an exact match is not found the user is notified that `there isn’t any algorithm recommendation for the given dataset`. So, a generic data description language is to be introduced to the system which is powerful enough to handle requests from data from various disciplines. The database only stores values like algorithm name, metric name, metric value and the hash dataset, there is scope  future implementation, which is to store even more meta data about the model like the model parameters and metrics for various configurations. In the long run, social questions need consideration such as preventing manipulation (developers of algorithms may have an interest that their algorithms are `recommended`) and free-rider problems (users benefiting from the system without sharing their data). Another challenge would arise if the system should not only focus on the globally best algorithm for a task (an entire dataset) but if per-instance algorithm selection should be learned. Ultimately, COOL-TOOL-NAME should be able to predict algorithm performance for unseen tasks. This would make the whole system even more complex.
@@ -204,6 +207,10 @@ Vartak, M., Thiagarajan, A., Miranda, C., Bratman, J. and Larochelle, H. 2017. A
 
 \bibitem{xu-et-al}
 Xu, L., Hutter, F., Hoos, H.H. and Leyton-Brown, K. 2008. SATzilla: portfolio-based algorithm selection for SAT. Journal of artificial intelligence research. 32, (2008), 565–606.
+
+\bibitem{william-et-al}
+William H Wolberg, W Nick Street, and Olvi L Mangasarian. 1992. Breast cancer Wisconsin (diagnostic) data set. UCI Machine Learning Repository {http://archive.ics.uci.edu/ml/} (1992)
+
 \end{thebibliography}
 
 %% The file named.bst is a bibliography style file for BibTeX 0.99c
