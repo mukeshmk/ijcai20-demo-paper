@@ -24,6 +24,7 @@
 \usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{listings}
+\usepackage{hyperref}
 \urlstyle{same}
 
 % the following package is optional:
@@ -88,11 +89,11 @@ COOL-TOOL-NAME and scikit-learn's toy datasets were used and evaluated against v
 \section{Overview and Related Work}
 There are an ever-growing number of algorithms used to solve machine learning and data science tasks and the challenge of algorithm selection and configuration is subject to intensive research. \cite{bischl-et-al,brazdil:p,calandra-et-al,collins-et-al2018,cunha-et-al2017,edenhofer-et-al,ferrari-et-al,hutter-et-al,kotthoff:l,lindauer-et-al,romero-et-al,tu:w,vartak-et-al}.
 
-Meta-learning is one of the most promising techniques to warm starting the algorithm selection and configuration process \cite{hutter-et-al}. With meta-learning, a machine learning model is trained to predict how algorithms perform on a given task. That predicted algorithm can then either be applied directly to solve the task, or further be optimized. The meta-learning model is built based on the past performance of algorithms on a large number of tasks (datasets). The tasks are typically described through meta-features, and for new unseen tasks, the most performant algorithms can be predicted through the meta-learner. Meta-learning is used not only for predicting the performance of machine learning algorithms but also for almost any kind of algorithm selection in various disciplines like SAT \cite{xu-et-al}, recommender systems \cite{collins-et-al2019,cunha-et-al2018}, reference parsing \cite{tkaczyk-et-al}.
+Meta-learning is one of the most promising techniques to warm starting the algorithm selection and configuration process \cite{hutter-et-al}. With meta-learning, a machine learning model is trained to predict how algorithms perform on a given task. The meta-learning model is built based on the past performance of algorithms on a large number of tasks (datasets), which are described through meta-features, and for new unseen tasks, the most performant algorithms can be predicted through the meta-learner.
 
 A challenge in algorithm selection and configuration is the (non) availability of data in some disciplines to build the meta-learning model. This is due to the typical workflow of machine learning, data science, etc. Typically, software libraries – be it machine learning libraries like (Auto) sklearn, or recommender system libraries like LibRec (-Auto) are used in isolation, either locally or in the cloud. Either way, the information about how different the algorithms and their configurations perform on a particular dataset, is neither published nor shared with others.
 
-The goal is to facilitate the algorithm selection process by leveraging historic performance data that was on various devices by various software libraries.
+The goal is to facilitate the algorithm selection process by leveraging historic performance data that was on various devices by various software libraries to improve the performance of algorithm and save time in finding the best algorithm for a task.
 
 
 \section{COOL-TOOL-NAME}
@@ -100,16 +101,18 @@ Here we would like to introduce the concept called “Federated Meta-Learning”
 
 Federated Meta Learning has similarities with “federated machine learning”, which was recently introduced by Google: “Federated [Machine] Learning enables [devices] to collaboratively learn a shared prediction model while keeping all the training data on device, decoupling the ability to do machine learning from the need to store the data in the cloud.”1 However, Federated Machine Learning focuses on learning one machine learning task across multiple devices. Whereas, Federated Meta Learning focuses on learning algorithm performance for arbitrary tasks across devices. We envision federated meta learning as an ecosystem where the raw data is kept on the original devices when the meta data would be stored in a central device. 
 
-We have built “COOL-TOOL-NAME” an implementation of this concept, a tool that allows everyone to benefit from the data that is generated through software libraries including machine learning and data science libraries as well as the auto* tools and tools from other domains. COOL-TOOL-NAME has a client-server architecture that allows the exchange of meta-data and performance metrics for the purpose of meta-learned algorithm selection and configuration across disciplines, and also have modified the machine-learning library scikit-learn to make API calls to COOL-TOOL-NAME so as to perform the above mentioned operations. This knowledge base is built and updated by users who use COOL-TOOL-NAME by sending their model’s and dataset’s meta-data via scikit-learn to the tool.
+“COOL-TOOL-NAME” has been developed to implement this concept, it is a tool that allows everyone to benefit from the data that is generated through software libraries including machine learning and data science libraries as well as the auto* tools and tools from other domains. COOL-TOOL-NAME has a client-server architecture that allows the exchange of meta-data and performance metrics for the purpose of meta-learned algorithm selection and configuration across disciplines, and the machine-learning library scikit-learn has also been modified to make API calls to COOL-TOOL-NAME so as to perform the above mentioned operations. This knowledge base is built and updated by users who use COOL-TOOL-NAME by sending meta-data of their model’s and dataset’s  via scikit-learn to COOL-TOOL-NAME.
 
-\begin{figure}[h]
+\url{https://github.com/mukeshmk/fml-back-end}
+
+The input to COOL-TOOL-NAME is a hashed dataset of the task, and the output is a recommendation for the potentially best performing algorithm(s) to solve that task (see Figure 1). This recommendation consists either of a list of the best algorithms or simply the best performing algorithm and their predicted performance values. In its simplest form, COOL-TOOL-NAME is a knowledge base or directory of algorithms-data performance measures.
+
+\begin{figure}[ht]
     \centering
     \includegraphics[width=3.5in]{architecture-diagram.PNG}
     \caption{Architecture Diagram}
     \label{architecture-diagram}
 \end{figure}
-
-The input to COOL-TOOL-NAME is a hashed dataset of the task, and the output is a recommendation for the potentially best performing algorithm(s) to solve that task (see Figure 1). This recommendation consists either of a list of the best algorithms or simply the best performing algorithm and their predicted performance values. In its simplest form, COOL-TOOL-NAME is a knowledge base or directory of algorithms-data performance measures.
 
 Scikit-learn Internally makes the following API call to publish the data sent by the user to the server.
 \begin{lstlisting}
@@ -164,17 +167,11 @@ Calandra, R., Hutter, F., Larochelle, H. and Levine, S. 2017. Workshop on Meta-L
 \bibitem{chen-et-al}
 Chen, F., Dong, Z., Li, Z. and He, X. 2018. Federated Meta-Learning for Recommendation. arXiv preprint arXiv:1802.07876. (2018).
 
-\bibitem{collins-et-al2019}
-Collins, A. and Beel, J. 2019. A First Analysis of Meta-Learned Per-Instance Algorithm Selection in Scholarly Recommender Systems. Workshop on Recommendation in Complex Scenarios, 13th ACM Conference on Recommender Systems (RecSys) (2019).
-
 \bibitem{collins-et-al2018}
 Collins, A., Tkaczyk, D. and Beel, J. 2018. A Novel Approach to Recommendation Algorithm Selection using Meta-Learning. Proceedings of the 26th Irish Conference on Artificial Intelligence and Cognitive Science (AICS) (2018), 210–219.
 
 \bibitem{cunha-et-al2017}
 Cunha, T., Soares, C. and Carvalho, A.C. 2017. Metalearning for Context-aware Filtering: Selection of Tensor Factorization Algorithms. Proceedings of the Eleventh ACM Conference on Recommender Systems (2017), 14–22.
-
-\bibitem{cunha-et-al2018}
-Cunha, T., Soares, C. and Carvalho, A.C. de 2018. Metalearning and Recommender Systems: A literature review and empirical study on the algorithm selection problem for Collaborative Filtering. Information Sciences. 423, (2018), 128–144.
 
 \bibitem{edenhofer-et-al}
 Edenhofer, G., Collins, A., Aizawa, A. and Beel, J. 2019. Augmenting the DonorsChoose.org Corpus for Meta-Learning. Proceedings of The 1st Interdisciplinary Workshop on Algorithm Selection and Meta-Learning in Information Retrieval (AMIR) (2019), 32–38.
@@ -193,9 +190,6 @@ Lindauer, M., Rijn, J.N. van and Kotthoff, L. 2018. The Algorithm Selection Comp
 
 \bibitem{romero-et-al}
 Romero, C., Olmo, J.L. and Ventura, S. 2013. A meta-learning approach for recommending a subset of white-box classification algorithms for Moodle datasets. Educational Data Mining 2013 (2013).
-
-\bibitem{tkaczyk-et-al}
-Tkaczyk, D., Gupta, R., Cinti, R. and Beel, J. 2018. ParsRec: A Novel Meta-Learning Approach to Recommending Bibliographic Reference Parsers. Proceedings of the 26th Irish Conference on Artificial Intelligence and Cognitive Science (AICS) (2018), 162–173.
 
 \bibitem{tu:w}
 Tu, W.-W. 2018. The 3rd AutoML Challenge: AutoML for Lifelong Machine Learning. NIPS 2018 Challenge (2018).
