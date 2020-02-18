@@ -86,23 +86,21 @@ COOL-TOOL-NAME and scikit-learn's toy datasets were used and evaluated against v
 \end{abstract}
 
 \section{Overview and Related Work}
-There are an ever-growing number of algorithms used to solve machine learning and data science problems and the key components of algorithm selection and configuration process is subject to intensive research. \cite{bischl-et-al,brazdil:p,calandra-et-al,collins-et-al2018,cunha-et-al2017,edenhofer-et-al,ferrari-et-al,hutter-et-al,kotthoff:l,lindauer-et-al,romero-et-al,tu:w,vartak-et-al}.
+There are an ever-growing number of algorithms used to solve machine learning and data science tasks and the challenge of algorithm selection and configuration is subject to intensive research. \cite{bischl-et-al,brazdil:p,calandra-et-al,collins-et-al2018,cunha-et-al2017,edenhofer-et-al,ferrari-et-al,hutter-et-al,kotthoff:l,lindauer-et-al,romero-et-al,tu:w,vartak-et-al}.
 
-Meta-learning is one of the most promising techniques to warm starting the algorithm selection and configuration process \cite{hutter-et-al}. With meta-learning, a machine learning model is trained to predict how algorithms perform on a given task. That predicted algorithm can then either be applied directly to solve the task, or further be optimized. The meta-learning model is built based on the past performance of algorithms on a large number of tasks (datasets). The tasks are typically described through meta-features, and for new unseen tasks, the most performant algorithms can be predicted through the meta-learner. Meta-learning is used not only for predicting the performance of machine learning algorithms but also for almost any kind of algorithm selection in various disciplines (SAT \cite{xu-et-al}; recommender systems \cite{collins-et-al2019,cunha-et-al2018}; reference parsing \cite{tkaczyk-et-al} …).
+Meta-learning is one of the most promising techniques to warm starting the algorithm selection and configuration process \cite{hutter-et-al}. With meta-learning, a machine learning model is trained to predict how algorithms perform on a given task. That predicted algorithm can then either be applied directly to solve the task, or further be optimized. The meta-learning model is built based on the past performance of algorithms on a large number of tasks (datasets). The tasks are typically described through meta-features, and for new unseen tasks, the most performant algorithms can be predicted through the meta-learner. Meta-learning is used not only for predicting the performance of machine learning algorithms but also for almost any kind of algorithm selection in various disciplines like SAT \cite{xu-et-al}, recommender systems \cite{collins-et-al2019,cunha-et-al2018}, reference parsing \cite{tkaczyk-et-al}.
 
+A challenge in algorithm selection and configuration is the (non) availability of data in some disciplines to build the meta-learning model. This is due to the typical workflow of machine learning, data science, etc. Typically, software libraries – be it machine learning libraries like (Auto) sklearn, or recommender system libraries like LibRec (-Auto) are used in isolation, either locally or in the cloud. Either way, the information about how different the algorithms and their configurations perform on a particular dataset, is neither published nor shared with others.
 
-\subsection{Research Problem}
-The prediction accuracy of meta-learning for algorithm selection varies strongly among disciplines. A challenge is the (non) availability of data in some disciplines to build the meta-learning model. This is due to the typical workflow of machine learning, data science, etc. Typically, software libraries – be it machine learning libraries like (Auto) sklearn, or recommender system libraries like LibRec (-Auto) are used in isolation, either locally or in the cloud. Either way, the information about how different the algorithms and their configurations perform on a particular dataset, is neither published nor shared with others.
-
-\subsection{Research Goal}
 The goal is to facilitate the algorithm selection process by leveraging historic performance data that was on various devices by various software libraries.
-
-\subsection{Related Work}
-Federated Meta Learning has similarities with “federated machine learning”, which was recently introduced by Google: “Federated [Machine] Learning enables [devices] to collaboratively learn a shared prediction model while keeping all the training data on device, decoupling the ability to do machine learning from the need to store the data in the cloud.”1 However, Federated Machine Learning focuses on learning one machine learning task across multiple devices. Whereas, Federated Meta Learning focuses on learning algorithm performance for arbitrary tasks across devices. We envision federated meta learning as an ecosystem where the raw data is kept on the original devices when the meta data would be stored in a central device. 
 
 
 \section{COOL-TOOL-NAME}
-We have built “COOL-TOOL-NAME”, a tool that allows everyone to benefit from the data that is generated through software libraries including machine learning and data science libraries as well as the auto* tools and tools from other domains. We have developed a client-server architecture that allows the exchange of meta-data and metrics for the purpose of meta-learned algorithm selection and configuration across disciplines, and also have modified scikit-learn (a machine learning library) to make API calls to COOL-TOOL-NAME so as to perform the above mentioned operations.
+Here we would like to introduce the concept called “Federated Meta-Learning” (FML), To the best of our knowledge this concept is novel. The term “Federated Meta Learning” has only been used once before by Chen et al. but in a different context \cite{chen-et-al}. 
+
+Federated Meta Learning has similarities with “federated machine learning”, which was recently introduced by Google: “Federated [Machine] Learning enables [devices] to collaboratively learn a shared prediction model while keeping all the training data on device, decoupling the ability to do machine learning from the need to store the data in the cloud.”1 However, Federated Machine Learning focuses on learning one machine learning task across multiple devices. Whereas, Federated Meta Learning focuses on learning algorithm performance for arbitrary tasks across devices. We envision federated meta learning as an ecosystem where the raw data is kept on the original devices when the meta data would be stored in a central device. 
+
+We have built “COOL-TOOL-NAME” an implementation of this concept, a tool that allows everyone to benefit from the data that is generated through software libraries including machine learning and data science libraries as well as the auto* tools and tools from other domains. COOL-TOOL-NAME has a client-server architecture that allows the exchange of meta-data and performance metrics for the purpose of meta-learned algorithm selection and configuration across disciplines, and also have modified the machine-learning library scikit-learn to make API calls to COOL-TOOL-NAME so as to perform the above mentioned operations. This knowledge base is built and updated by users who use COOL-TOOL-NAME by sending their model’s and dataset’s meta-data via scikit-learn to the tool.
 
 \begin{figure}[h]
     \centering
@@ -111,7 +109,7 @@ We have built “COOL-TOOL-NAME”, a tool that allows everyone to benefit from 
     \label{architecture-diagram}
 \end{figure}
 
-The input to COOL-TOOL-NAME is a hashed dataset of the task, and the output is a recommendation for the potentially best performing algorithm(s) to solve that task (see Figure 1). This recommendation consists either of a list of the best algorithms or simply the best performing algorithm and their predicted performance values. In its simplest form, COOL-TOOL-NAME is a knowledge base or directory of algorithms-data performance measures. Here we would like to introduce the concept called “Federated Meta-Learning” (FML), COOL-TOOL-NAME is an implementation of this concept. To the best of our knowledge this concept is novel. The term “Federated Meta Learning” has only been used once before by Chen et al. but in a different context \cite{chen-et-al}. This knowledge base is built and updated by users who use COOL-TOOL-NAME by sending their model’s and dataset’s meta-data via scikit-learn to the tool.
+The input to COOL-TOOL-NAME is a hashed dataset of the task, and the output is a recommendation for the potentially best performing algorithm(s) to solve that task (see Figure 1). This recommendation consists either of a list of the best algorithms or simply the best performing algorithm and their predicted performance values. In its simplest form, COOL-TOOL-NAME is a knowledge base or directory of algorithms-data performance measures.
 
 Scikit-learn Internally makes the following API call to publish the data sent by the user to the server.
 \begin{lstlisting}
@@ -139,7 +137,7 @@ A sample of the output for an API call via scikit-learn for one of it's toy data
 \begin{lstlisting}[language=python]
 f.retrieve_best_metric(data_set, True)
 \end{lstlisting}
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=3.5in]{sample-output.PNG}
     \caption{Sample Output}
