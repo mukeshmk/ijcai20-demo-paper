@@ -142,7 +142,7 @@ A sample of the output from the API call via scikit-learn for one of it's toy da
 
 
 \section{Evaluation}
-FMLearn and scikit-learn's toy datasets were used and evaluated against various machine learning algorithms for which the execution time was measured. In the case of scikit-learn’s Diabetes dataset \cite{bradley-et-al}, an execution time of 0.0261sec and 0.2593sec were recorded for Lasso and LinearRegression respectively, along with 8 other algorithms which in total took 1.16sec to execute. The algorithm with the best metric was HuberRegressor with an MSE of 2438.005 which took 0.033sec to execute. Use of FMLearn to identify the best performing algorithm for a given task, allows the user in scaling down the time consumed in executing which is 1.13sec, code rewriting and correcting possible human errors, etc.
+FMLearn and scikit-learn's toy datasets were used and evaluated against various machine learning algorithms for which the execution time was measured. In the case of scikit-learn’s Diabetes dataset \cite{bradley-et-al}, an execution time of 0.0261sec and 0.2593sec were recorded for Lasso and LinearRegression respectively, along with 8 other algorithms which in total took 1.16sec to execute. The algorithm with the best metric was HuberRegressor with an MSE of 2438.005 which took 0.033sec to execute. Use of FMLearn to identify the best performing algorithm for a given task, allows the user in scaling down the time consumed in executing which is 1.13sec, code rewriting and correcting possible human errors, etc. Similarly for other datasets like Breast Cancer \cite{brendan-et-al}, Iris \cite{fisher:r}, Wine \cite{lichman:m}, Linnerrud \cite{tenenhaus:m} and Boston \cite{harrison-et-al}, users can save 1.63sec, 1.08sec, 0.88sec, 0.21sec and 0.48sec in execution time, along with the effort put in as above. In case of small and standard dataset the numbers appear small, in case of large dataset, the time saved in algorithm selection and configuration will be significantly huge.
 
 With the introduction of Federated Meta Learning and developement of FMLearn, algorithm selection and configuration process can be changed, as the workflow of libraries have been modified, and the issue of (non) availability of data has been solved.
 
@@ -203,6 +203,18 @@ Brendan M and Daniel R. (2017). Federated Learning: Collaborative Machine Learni
 
 \bibitem{bradley-et-al}
 Bradley Efron, Trevor Hastie, Iain Johnstone and Robert Tibshirani (2004) “Least Angle Regression,” Annals of Statistics (with discussion), 407-499. 
+
+\bibitem{fisher:r}
+Fisher, R.A. “The use of multiple measurements in taxonomic problems” Annual Eugenics, 7, Part II, 179-188 (1936); also in “Contributions to Mathematical Statistics” (John Wiley, NY, 1950).
+
+\bibitem{lichman:m}
+Lichman, M. (2013). UCI Machine Learning Repository [https://archive.ics.uci.edu/ml]. Irvine, CA: University of California, School of Information and Computer Science.
+
+\bibitem{tenenhaus:m}
+Tenenhaus, M. (1998). La regression PLS: theorie et pratique. Paris: Editions Technic.
+
+\bibitem{harrison-et-al}
+Harrison, D. and Rubinfeld, D.L. ‘Hedonic prices and the demand for clean air’, J. Environ. Economics \& Management, vol.5, 81-102, 1978
 
 \end{thebibliography}
 
