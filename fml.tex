@@ -57,7 +57,7 @@
 % page charge instructions.
 % Put where the files are available in the appropriate places.
 
-\title{Federated Meta Learning}
+\title{Federated Meta-Learning: Democratizing Algorithm Selection Across Disciplines and Software Libraries}
 
 % Check the ijcai20-multiauthor.tex file for detailed instructions
 
@@ -113,7 +113,7 @@ FMLearn in it's current state is a prototype in it's most simplest form. The inp
     \label{architecture-diagram}
 \end{figure}
 
-The modified version of scikit-learn is used to make API calls to FMLearn internally to publish the meta-data. The API to publish the meta-data is:
+The modified version of scikit-learn is used to make API calls to FMLearn internally to publish and retrieve meta-data. The API to publish the meta-data is:
 \begin{lstlisting}
 POST: /metric
 data-params: 
@@ -132,7 +132,7 @@ These API's are exposed via scikit-learn library by importing the following pack
 from sklearn.fml import FMLClient
 \end{lstlisting}
 
-A sample of the output from the API call via scikit-learn for one of it's toy data-sets (Diabetes dataset) \cite{bradley-et-al} is as follows (see figure 2):
+A sample of the output from the API call via scikit-learn for one of it's toy data-sets (Diabetes \cite{bradley-et-al}) see figure 2.
 \begin{figure}[ht]
     \centering
     \includegraphics[width=3.5in]{sample-output.PNG}
