@@ -82,8 +82,8 @@ ADAPT Centre
 \maketitle
 
 \begin{abstract}
-“Federated Meta-Learning” (FML), a concept that allows everyone to benefit from the data that is generated through software libraries including machine learning and data science libraries. We have built FMLearn to achieve this, an application that allows the exchange of meta-data about machine learning models for the purpose of meta-learned algorithm selection and configuration across disciplines.
-FMLearn and scikit-learn's toy datasets were used and evaluated against various machine learning algorithms for which the execution time was measured. In the case of scikit-learn’s breast cancer dataset, it resulted in the execution time of 0.039sec and 0.596sec for SVC and GradientBoostingClassifier respectively along with 8 other algorithms to identify the algorithm with best performance (least MSE). Use of FMLearn to identify the best algorithm for a dataset allows the user in scaling down the repetitive effort and time consumed in rewriting and executing code, correcting possible human errors, etc.
+“Federated Meta-Learning” (FML), a concept that allows everyone to benefit from the data that is generated through software libraries including machine learning and data science libraries. We have built FMLearn, an application that allows the exchange of meta-data about machine learning models for the purpose of meta-learned algorithm selection and configuration.
+FMLearn and scikit-learn's toy datasets were used and evaluated against various machine learning algorithms for which the execution time was measured. In the case of scikit-learn’s breast cancer dataset, it resulted in the execution time of 0.039sec and 0.596sec for SVC and GradientBoostingClassifier respectively along with 8 other algorithms which in total took 1.67sec to execute. Use of FMLearn to identify the algorithm with best performance (least MSE) for this dataset allows the user in scaling down the repetitive effort and time consumed in rewriting and executing code, correcting possible human errors, etc, in this case saves 1.6sec of execution time plus the time required to code and find the best algorithm for the task.
 \end{abstract}
 
 \section{Overview and Related Work}
@@ -108,7 +108,7 @@ The input to FMLearn is a hashed dataset of the task, and the output is a recomm
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=3.5in]{architecture-diagram.PNG}
+    \includegraphics[width=3.5in]{architecture-diagram.jpeg}
     \caption{Architecture Diagram}
     \label{architecture-diagram}
 \end{figure}
