@@ -16,7 +16,8 @@
 \usepackage{url}
 \usepackage[hidelinks]{hyperref}
 \usepackage[utf8]{inputenc}
-\usepackage[small]{caption}
+%\usepackage[small]{caption}
+\usepackage[font=small,skip=0pt]{caption}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -69,7 +70,7 @@ Joeran Beel$^2$
 $^1$Trinity College Dublin,
 School of Computer Science and Statistics\\
 $^2$Trinity College Dublin,
-School of Computer Science and Statistics,
+School of Computer Science and Statistics,w
 Artificial Intelligence Discipline,
 ADAPT Centre
 \emails
@@ -82,8 +83,7 @@ ADAPT Centre
 \maketitle
 
 \begin{abstract}
-“Federated Meta-Learning” (FML), a concept that allows everyone to benefit from the data that is generated through software libraries including machine learning and data science libraries. We have built FMLearn, an application developed using the client-server model, to allows the exchange of meta-data about machine learning models for the purpose of meta-learned algorithm selection and configuration. FMLearn and scikit-learn’s toy datasets were used and evaluated against various machine learning algorithms for which the execution time was measured. In the case of scikit-learn’s diabetes dataset, an execution time of 0.0261sec and 0.2593sec were recorded for Lasso and LinearRegression respectively along with 8 other algorithms which in total took 1.16sec to execute. 
-The use of FMLearn to identify the algorithm with best performance, that is, least MSE for a dataset allows the user in scaling down the repetitive effort and time consumed in rewriting and executing code, correcting possible human errors, etc. In this case the best performing algorithm was HuberRegression which took 0.033sec, saving 1.13sec during execution time along with the time required to code and find the best algorithm for the task.
+“Federated Meta-Learning” (FML), a concept that allows everyone to benefit from the data that is generated through software libraries including machine learning and data science libraries. We have built FMLearn, an application developed using the client-server model, which allows the exchange of meta-data about machine learning models for the purpose of meta-learned algorithm selection and configuration. FMLearn and scikit-learn’s toy datasets were used and evaluated against various machine learning algorithms using GridSearchCV and Cross-Validation for which the execution time was measured. In the case of scikit-learn’s breast cancer dataset, an execution time of approx. 19.3min was recorded by performing Grid Search for the best algorithm. Whereas, when FMLearn was used only 3sec was recorded to fetch and execute the best algorithm along with it's model parameters. The use of FMLearn takes approx. 19.2min to identify the algorithm with best performance for this dataset. Overall, the use of this application allows the user to scale down the repetitive effort and time consumed in rewriting and executing code and correcting possible human errors.
 \end{abstract}
 
 \section{Overview and Related Work}
@@ -93,7 +93,7 @@ Meta-learning is one of the most promising techniques to warm starting the algor
 
 A challenge in algorithm selection and configuration is the (non) availability of data in some disciplines to build the meta-learning model, which is due to the workflow of machine learning, data science or other projects. Typically, software libraries – be it machine learning libraries like (Auto) sklearn, or recommender system libraries like LibRec (-Auto) are used in isolation, either locally or in the cloud. By “in isolation” we mean that the information how algorithms perform on a particular dataset, is neither published nor shared. Consequently, computationally expensive algorithm selection and hyper parameter optimization is performed by each machine learning engineer. 
 
-Our goal is to facilitate the algorithm selection process by leveraging historic performance data, producedon various devices and by various machine learning libraries to improve the performance of algorithm selection and save time in finding the best algorithm for a task. To improve the algorithm selection and configuration process we propose what we call “Federated Meta-Learning”. In addition, we present the first prototype of Federated Meta Learning named “FMLearn”. 
+Our goal is to facilitate the algorithm selection process by leveraging historic performance data, produced on various devices and by various machine learning libraries to improve the performance of algorithm selection and save time in finding the best algorithm and it's hyper-parameters for a task. To improve the algorithm selection and configuration process we propose what we call “Federated Meta-Learning”. In addition, we present the first prototype of Federated Meta Learning named “FMLearn”. 
 
 
 \section{Federated Meta-Learning}
@@ -104,7 +104,7 @@ Federated Meta Learning has similarities with “federated machine learning”, 
 
 “FMLearn\footnote{\url{https://github.com/mukeshmk/fm-learn}}”has been developed to implement this concept, it is a tool that allows everyone to benefit from the data that is generated through machine learning and data science libraries. FMLearn has a client-server architecture that allows the exchange of meta-data and performance metrics for the purpose of meta-learned algorithm selection and configuration across disciplines, and the machine-learning library scikit-learn\footnote{\url{https://github.com/mukeshmk/scikit-learn}} has been forked and a package has been developed in it to make API calls to FMLearn.
 
-FMLearn, in it’s current state, is a prototype in its most simplest form. The input to its API is the hash of a dataset, and the output is a recommendation for the potentially best performing algorithm(s) to solve that task (see Figure 1). This recommendation consists either of a list of the best algorithms or simply the best performing algorithm and their predicted performance values. As of now, FMLearn is a knowledge base or directory of algorithm-data performance measures. This knowledge base is built and updated by users who use FMLearn by sending meta-data of their model’s and dataset’s via scikit-learn to FMLearn.
+FMLearn, in it’s current state, is a prototype in its most simplest form. The input to its API is the hash of a dataset, and the output is a recommendation for the potentially best performing algorithm(s) and it's hyper-parameters to solve that task (see Figure 1). This recommendation consists either of a list of the best algorithms or simply the best performing algorithm and their predicted performance values along with it's hyper-parameters. As of now, FMLearn is a knowledge base or directory of algorithm-data performance measures. This knowledge base is built and updated by users who use FMLearn by sending meta-data of their model’s and dataset’s via scikit-learn to FMLearn.
 
 \begin{figure}[ht]
     \centering
@@ -113,24 +113,16 @@ FMLearn, in it’s current state, is a prototype in its most simplest form. The 
     \label{architecture-diagram}
 \end{figure}
 
-The modified version of scikit-learn is used to make API calls to FMLearn internally to publish and retrieve meta-data. The API to publish the meta-data is:
-\begin{lstlisting}
-POST: /metric
-data-params: 
-{model, name, value, hashed-dataset}
-\end{lstlisting}
+The modified version of scikit-learn is used to make API calls to FMLearn internally to publish and retrieve meta-data. The API to publish the meta-data is: 
+\textbf{\textit{POST: /metric}}
 
-These API calls are used to retrieve all / the best algorithm with minimum metric value / the best algorithm with maximum metric value respectively from the FMLearn given a hashed-dataset as a data parameter.
-\begin{lstlisting}
-POST: /metric/retrieve/all
-POST: /metric/retrieve/min
-POST: /metric/retrieve/max
-\end{lstlisting}
+These API calls are used to retrieve all / the best algorithm with minimum metric value / the best algorithm with maximum metric value respectively from the FMLearn given a hashed-dataset as a data parameter. 
+
+\textbf{\textit{POST:/metric/retrieve/\{all/min/max\}}}
 
 These API’s are exposed via scikit-learn library by importing the following package and by making appropriate function calls:
-\begin{lstlisting}[language=python]
-from sklearn.fml import FMLClient
-\end{lstlisting}
+
+\textbf{\textit{from sklearn.fml import FMLClient}}
 
 A sample of the output from the API call via scikit-learn for one of it's toy data-sets (Diabetes \cite{bradley-et-al}) see figure 2.
 \begin{figure}[ht]
@@ -142,12 +134,12 @@ A sample of the output from the API call via scikit-learn for one of it's toy da
 
 
 \section{Evaluation}
-We evaluated FMLearn by considering scikit-learn’s toy dataset’s for example, the Diabetes dataset \cite{bradley-et-al}. Various machine learning algorithm were executed against it to find the best performing algorithm and evaluated the time required to execute it and the results are as follows; An execution time of 0.0261sec and 0.2593sec were recorded for Lasso and LinearRegression respectively, along with 8 other algorithms which in total took 1.16sec to execute. The algorithm with the best metric was HuberRegressor with an MSE of 2438.005 which took 0.033sec to execute. FMLearn helps in identifying the best performing algorithm for a given task, which lets the user in scaling down the time consumed in various tasks like: executing which is 1.13sec, code rewriting and correcting possible human errors, etc. Similarly for other datasets like Breast Cancer \cite{brendan-et-al}, Iris \cite{fisher:r}, Wine \cite{lichman:m}, Linnerrud \cite{tenenhaus:m} and Boston \cite{harrison-et-al}], users can save 1.63sec, 1.08sec, 0.88sec, 0.21sec and 0.48sec in execution time, along with the effort put in as above. In the case of small and standard dataset the numbers appear small, whereas for large dataset, the time saved in algorithm selection and configuration will be significantly large.
+We evaluated FMLearn by considering scikit-learn’s toy datasets for instance, the Breast Cancer dataset \cite{brendan-et-al}. Various machine learning algorithms were executed against it to find the best performing algorithm and their hyper-parameters using Cross-Validation and GridSearchCV. Their execution time was recorded and the results are as follows; An execution time of 19.3min was recorded for performing cross-validation over 8 algorithms along with grid search for hyper-parameters for identifying the best algorithm among them. This benefits the user by scaling down the time consumed for execution - 19.2min, code rewriting and correcting possible human errors, etc. Similarly for other datasets like Diabetes \cite{bradley-et-al}, Wine \cite{lichman:m}, Boston \cite{harrison-et-al} and Iris \cite{fisher:r}, users can save 18.4min, 3.3min 7.1min and  17.6sec in execution time. In the case of small and standard datasets the numbers appear small, whereas for large datasets, the time saved in algorithm selection and configuration will be significantly large.
 
-With the introduction of Federated Meta Learning and developement of FMLearn, algorithm selection and configuration process can be changed, as the workflow of libraries have been modified, and the issue of (non) availability of data has been solved.
+With the introduction of Federated Meta Learning and development of FMLearn, algorithm selection and configuration process can be changed, as the workflow of libraries have been modified, and the issue of (non) availability of data has been solved.
 
 \section{Limitations and Future Work}
-Currently as a prototype, FMLearn suggests algorithm(s), if the hashed dataset provided as the input is an exact match to that in the database. So, a generic data description language is to be introduced to the system which is powerful enough to handle requests. FMLearn only stores values like algorithm name, metric name, value and the hash dataset. In future implementation, we hope to store meta data about the model like the model parameters and metrics. In the long run, social questions need consideration such as preventing manipulation (developers of algorithms may have an interest that their algorithms are `recommended`) and free-rider problems (users benefiting from the system without sharing their data). Another challenge would arise if the system should not only focus on the globally best algorithm for a task, but if per-instance algorithm selection should be learned. Ultimately, FMLearn should be able to predict algorithm performance for unseen tasks. This would make the whole system even more complex.
+Currently as a prototype, FMLearn suggests algorithm(s), if the hashed dataset provided as the input is an exact match to that in the database. So, a generic data description language is to be introduced to the system which is powerful enough to handle requests. FMLearn only stores values like algorithm name, metric name, value, the hash dataset and the model-parameters. In future implementation, we hope to store meta data about the model. In the long run, social questions need consideration such as preventing manipulation (developers of algorithms may have an interest that their algorithms are `recommended`) and free-rider problems (users benefiting from the system without sharing their data). Another challenge would arise if the system should not only focus on the globally best algorithm for a task, but if per-instance algorithm selection should be learned. Ultimately, FMLearn should be able to predict algorithm performance for unseen tasks. This would make the whole system even more complex.
 
 \begin{thebibliography}{9}
 \bibitem{bischl-et-al}
@@ -209,9 +201,6 @@ Fisher, R.A. “The use of multiple measurements in taxonomic problems” Annual
 
 \bibitem{lichman:m}
 Lichman, M. (2013). UCI Machine Learning Repository [https://archive.ics.uci.edu/ml]. Irvine, CA: University of California, School of Information and Computer Science.
-
-\bibitem{tenenhaus:m}
-Tenenhaus, M. (1998). La regression PLS: theorie et pratique. Paris: Editions Technic.
 
 \bibitem{harrison-et-al}
 Harrison, D. and Rubinfeld, D.L. ‘Hedonic prices and the demand for clean air’, J. Environ. Economics \& Management, vol.5, 81-102, 1978
