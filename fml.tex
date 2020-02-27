@@ -87,24 +87,22 @@ ADAPT Centre
 \end{abstract}
 
 \section{Overview and Related Work}
-An ever-growing number of algorithms are used to solve machine learning and data science tasks, and the challenge of algorithm selection and configuration is subject to intensive research. \cite{bischl-et-al,brazdil:p,calandra-et-al,collins-et-al2018,cunha-et-al2017,edenhofer-et-al,ferrari-et-al,hutter-et-al,kotthoff:l,lindauer-et-al,romero-et-al,tu:w,vartak-et-al}.
+An ever-growing number of algorithms are used to solve machine learning and data science tasks, and the challenge of algorithm selection and configuration is subject to intensive research \cite{bischl-et-al,brazdil:p,calandra-et-al,collins-et-al2018,romero-et-al,vartak-et-al}. Meta-learning is one of the most promising techniques to warm starting the algorithm selection and configuration process \cite{hutter-et-al}. With meta-learning, a machine learning model is trained to predict how algorithms perform on a given task. The meta-learning model is built based on the past performance of algorithms on a large number of tasks or datasets, which are described through meta-features. For unseen tasks, the best performing algorithms can be predicted through the meta-learner (and subsequently be optimized e.g. with Bayesian Hyper-parameter Optimization).
 
-Meta-learning is one of the most promising techniques to warm starting the algorithm selection and configuration process \cite{hutter-et-al}. With meta-learning, a machine learning model is trained to predict how algorithms perform on a given task. The meta-learning model is built based on the past performance of algorithms on a large number of tasks or datasets, which are described through meta-features, and for new unseen tasks, the most performant algorithms can be predicted through the meta-learner.
-
-A challenge in algorithm selection and configuration is the (non) availability of data in some disciplines to build the meta-learning model, which is due to the workflow of machine learning, data science or other projects. Typically, software libraries – be it machine learning libraries like (Auto) sklearn, or recommender system libraries like LibRec (-Auto) are used in isolation, either locally or in the cloud. By “in isolation” we mean that the information how algorithms perform on a particular dataset, is neither published nor shared. Consequently, computationally expensive algorithm selection and hyper parameter optimization is performed by each machine learning engineer. 
+A challenge in algorithm selection and configuration is the (non) availability of data in some disciplines to build the meta-learning model, which is due to the workflow of machine learning, data science or other projects. Typically, software libraries – be it machine learning libraries like (Auto) sklearn, (Auto) Weka or (Auto) Keras, or recommender system libraries like LibRec (-Auto), are used in isolation, either locally or in the cloud. By “in isolation” we mean that the information how algorithms perform on a particular dataset, is neither published nor shared. Consequently, computationally expensive algorithm selection and hyper parameter optimization is performed by each machine learning engineer over and over again. 
 
 Our goal is to facilitate the algorithm selection process by leveraging historic performance data, produced on various devices and by various machine learning libraries to improve the performance of algorithm selection and save time in finding the best algorithm and it's hyper-parameters for a task. To improve the algorithm selection and configuration process we propose what we call “Federated Meta-Learning”. In addition, we present the first prototype of Federated Meta Learning named “FMLearn”. 
 
 
 \section{Federated Meta-Learning}
+“Federated Meta-Learning” (FML) has similarities with “federated machine learning”, which was recently introduced by Google: “Federated [Machine] Learning enables [devices] to collaboratively learn a shared prediction model while keeping all the training data on device, decoupling the ability to do machine learning from the need to store the data in the cloud.”\cite{brendan-et-al} However, Federated Machine Learning focuses on learning one machine learning task across multiple devices, whereas, Federated Meta Learning focuses on learning algorithm performance for arbitrary tasks across devices. We envision federated meta learning as an ecosystem where the raw data is kept on the original devices and the meta data, algorithm names, and performance of the algorithm on the tasks would be stored on a central FML server (though a peer-to-peer architecture might also be possible). 
 
-We introduce the concept called “Federated Meta-Learning” (FML), to the best of our knowledge this concept is novel. The term “Federated Meta Learning” has only been used once before by Chen et al. but in a different context \cite{chen-et-al}. 
+Federated Meta-Learning is, to the best of our knowledge novel. The term “Federated Meta Learning” has only been used once before by Chen et al. but in a different context \cite{chen-et-al}. 
 
-Federated Meta Learning has similarities with “federated machine learning”, which was recently introduced by Google: “Federated [Machine] Learning enables [devices] to collaboratively learn a shared prediction model while keeping all the training data on device, decoupling the ability to do machine learning from the need to store the data in the cloud.”\cite{brendan-et-al} However, Federated Machine Learning focuses on learning one machine learning task across multiple devices, whereas, Federated Meta Learning focuses on learning algorithm performance for arbitrary tasks across devices. We envision federated meta learning as an ecosystem where the raw data is kept on the original devices when the meta data would be stored in a central device.
+\section{FMLearn}
+We introduce “FMLearn" as a simple proof of concept of Federated Meta-Learning. FMLearn allows everyone to benefit from the data that is generated through machine learning and data science libraries. FMLearn consists of a server\footnote{\url{https://github.com/mukeshmk/FMLearn/server/}}” and a client, in our case a modified scikit-learn \footnote{\url{https://github.com/mukeshmk/FMLearn/clients/scikit-learn}}, but it could be any machine learning library.  
 
-“FMLearn\footnote{\url{https://github.com/mukeshmk/fm-learn}}”has been developed to implement this concept, it is a tool that allows everyone to benefit from the data that is generated through machine learning and data science libraries. FMLearn has a client-server architecture that allows the exchange of meta-data and performance metrics for the purpose of meta-learned algorithm selection and configuration across disciplines, and the machine-learning library scikit-learn\footnote{\url{https://github.com/mukeshmk/scikit-learn}} has been forked and a package has been developed in it to make API calls to FMLearn.
-
-FMLearn, in it’s current state, is a prototype in its most simplest form. The input to its API is the hash of a dataset, and the output is a recommendation for the potentially best performing algorithm(s) and it's hyper-parameters to solve that task (see Figure 1). This recommendation consists either of a list of the best algorithms or simply the best performing algorithm and their predicted performance values along with it's hyper-parameters. As of now, FMLearn is a knowledge base or directory of algorithm-data performance measures. This knowledge base is built and updated by users who use FMLearn by sending meta-data of their model’s and dataset’s via scikit-learn to FMLearn.
+The input to FMLearn's API is the hash of a dataset, and the output is a recommendation for the potentially best performing algorithm(s) and it's hyper-parameters to solve that task (see Figure 1). This recommendation consists either of a list of the best algorithms or simply the best performing algorithm and their predicted performance values along with it's hyper-parameters. As of now, FMLearn is a knowledge base or directory of algorithm-data performance measures, without any meta-learning being applied. This knowledge base is built and updated by users who use FMLearn by sending meta-data of their model’s and dataset’s via scikit-learn to FMLearn.
 
 \begin{figure}[ht]
     \centering
@@ -127,19 +125,17 @@ These API’s are exposed via scikit-learn library by importing the following pa
 A sample of the output from the API call via scikit-learn for one of it's toy data-sets (Diabetes \cite{bradley-et-al}) see figure 2.
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=3.5in]{sample-output.PNG}
+    \includegraphics[width=3.5in, height=1in]{sample-output.png}
     \caption{Sample Output}
     \label{sample-output}
 \end{figure}
 
 
 \section{Evaluation}
-We evaluated FMLearn by considering scikit-learn’s toy datasets for instance, the Breast Cancer dataset \cite{brendan-et-al}. Various machine learning algorithms were executed against it to find the best performing algorithm and their hyper-parameters using Cross-Validation and GridSearchCV. Their execution time was recorded and the results are as follows; An execution time of 19.3min was recorded for performing cross-validation over 8 algorithms along with grid search for hyper-parameters for identifying the best algorithm among them. This benefits the user by scaling down the time consumed for execution - 19.2min, code rewriting and correcting possible human errors, etc. Similarly for other datasets like Diabetes \cite{bradley-et-al}, Wine \cite{lichman:m}, Boston \cite{harrison-et-al} and Iris \cite{fisher:r}, users can save 18.4min, 3.3min 7.1min and  17.6sec in execution time. In the case of small and standard datasets the numbers appear small, whereas for large datasets, the time saved in algorithm selection and configuration will be significantly large.
-
-With the introduction of Federated Meta Learning and development of FMLearn, algorithm selection and configuration process can be changed, as the workflow of libraries have been modified, and the issue of (non) availability of data has been solved.
+ We used FMLlearn's client on two computers. The first computer trained run eight machine learning algorithms on five datasets (Breast Cancer \cite{brendan-et-al}, Diabetes \cite{bradley-et-al}, Wine \cite{lichman:m}, Boston \cite{harrison-et-al} and Iris \cite{fisher:r}). The training used Grid-Search for hyper paramter optimization and cross-validation. The total execution time for each dataset was between 17 seconds (Iris) and 19:15 minutes (Breast Cancer). FMLlearn automatically submitted all performance metrics and algorithm names as well as the hashes of the datasets to the FMLearn API. On a second machine, we run the same experiments. Before the training started, FMLlearn's client requested the algorithm recommendations from the API. In the scenario that the client just used the returned best algorithm with its hyper parameters, no training was needed. Hence, the user saved xxx minutes. In a scenario where the user would want to re-optimize hyper parameters, only the training for one algorithm was needed. In that case, time savings for the user are between xxx and yyy. 
 
 \section{Limitations and Future Work}
-Currently as a prototype, FMLearn suggests algorithm(s), if the hashed dataset provided as the input is an exact match to that in the database. So, a generic data description language is to be introduced to the system which is powerful enough to handle requests. FMLearn only stores values like algorithm name, metric name, value, the hash dataset and the model-parameters. In future implementation, we hope to store meta data about the model. In the long run, social questions need consideration such as preventing manipulation (developers of algorithms may have an interest that their algorithms are `recommended`) and free-rider problems (users benefiting from the system without sharing their data). Another challenge would arise if the system should not only focus on the globally best algorithm for a task, but if per-instance algorithm selection should be learned. Ultimately, FMLearn should be able to predict algorithm performance for unseen tasks. This would make the whole system even more complex.
+Currently as a prototype, FMLearn suggests algorithm(s), if the hashed dataset provided as the input is an exact match to that in the database. So, a generic data description language is to be introduced to the system which is powerful enough to handle requests. FMLearn only stores values like algorithm name, metric name, value, the hash dataset and the model-parameters. In future implementation, we hope to store meta data about the model. In the long run, social questions need consideration such as preventing manipulation (developers of algorithms may have an interest that their algorithms are `recommended`) and free-rider problems (users benefiting from the system without sharing their data). Another challenge would arise if the system should not only focus on the globally best algorithm for a task, but if per-instance algorithm selection should be learned. Ultimately, FMLearn should be able to predict algorithm performance for unseen tasks.  
 
 \begin{thebibliography}{9}
 \bibitem{bischl-et-al}
@@ -157,20 +153,20 @@ Chen, F., Dong, Z., Li, Z. and He, X. 2018. Federated Meta-Learning for Recommen
 \bibitem{collins-et-al2018}
 Collins, A., Tkaczyk, D. and Beel, J. 2018. A Novel Approach to Recommendation Algorithm Selection using Meta-Learning. Proceedings of the 26th Irish Conference on Artificial Intelligence and Cognitive Science (AICS) (2018), 210–219.
 
-\bibitem{cunha-et-al2017}
-Cunha, T., Soares, C. and Carvalho, A.C. 2017. Metalearning for Context-aware Filtering: Selection of Tensor Factorization Algorithms. Proceedings of the Eleventh ACM Conference on Recommender Systems (2017), 14–22.
+%\bibitem{cunha-et-al2017}
+%Cunha, T., Soares, C. and Carvalho, A.C. 2017. Metalearning for Context-aware Filtering: Selection of Tensor Factorization Algorithms. Proceedings of the Eleventh ACM Conference on Recommender Systems (2017), 14–22.
 
-\bibitem{edenhofer-et-al}
-Edenhofer, G., Collins, A., Aizawa, A. and Beel, J. 2019. Augmenting the DonorsChoose.org Corpus for Meta-Learning. Proceedings of The 1st Interdisciplinary Workshop on Algorithm Selection and Meta-Learning in Information Retrieval (AMIR) (2019), 32–38.
+%\bibitem{edenhofer-et-al}
+%Edenhofer, G., Collins, A., Aizawa, A. and Beel, J. 2019. Augmenting the DonorsChoose.org Corpus for Meta-Learning. Proceedings of The 1st Interdisciplinary Workshop on Algorithm Selection and Meta-Learning in Information Retrieval (AMIR) (2019), 32–38.
 
-\bibitem{ferrari-et-al}
-Ferrari, D.G. and De Castro, L.N. 2015. Clustering algorithm selection by meta-learning systems: A new distance-based problem characterization and ranking combination methods. Information Sciences. 301, (2015), 181–194.
+%\bibitem{ferrari-et-al}
+%Ferrari, D.G. and De Castro, L.N. 2015. Clustering algorithm selection by meta-learning systems: A new distance-based problem characterization and ranking combination methods. Information Sciences. 301, (2015), 181–194.
 
 \bibitem{hutter-et-al}
 Hutter, F., Kotthoff, L. and Vanschoren, J. 2019. Automatic machine learning: methods, systems, challenges. Challenges in Machine Learning. (2019).
 
-\bibitem{kotthoff:l}
-Kotthoff, L. 2016. Algorithm selection for combinatorial search problems: A survey. Data Mining and Constraint Programming. Springer. 149–190.
+%\bibitem{kotthoff:l}
+%Kotthoff, L. 2016. Algorithm selection for combinatorial search problems: A survey. Data Mining and Constraint Programming. Springer. 149–190.
 
 \bibitem{lindauer-et-al}
 Lindauer, M., Rijn, J.N. van and Kotthoff, L. 2018. The Algorithm Selection Competition Series 2015-17. arXiv preprint arXiv:1805.01214. (2018).
@@ -178,8 +174,8 @@ Lindauer, M., Rijn, J.N. van and Kotthoff, L. 2018. The Algorithm Selection Comp
 \bibitem{romero-et-al}
 Romero, C., Olmo, J.L. and Ventura, S. 2013. A meta-learning approach for recommending a subset of white-box classification algorithms for Moodle datasets. Educational Data Mining 2013 (2013).
 
-\bibitem{tu:w}
-Tu, W.-W. 2018. The 3rd AutoML Challenge: AutoML for Lifelong Machine Learning. NIPS 2018 Challenge (2018).
+%\bibitem{tu:w}
+%Tu, W.-W. 2018. The 3rd AutoML Challenge: AutoML for Lifelong Machine Learning. NIPS 2018 Challenge (2018).
 
 \bibitem{vartak-et-al}
 Vartak, M., Thiagarajan, A., Miranda, C., Bratman, J. and Larochelle, H. 2017. A Meta-Learning Perspective on Cold-Start Recommendations for Items. Advances in Neural Information Processing Systems (2017), 6907–6917.
